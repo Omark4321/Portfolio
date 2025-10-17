@@ -1,0 +1,376 @@
+// Clothing Website - Minimal Functional Implementation Using HTML, CSS, and JavaScript
+// 
+// How to run it:
+// 1. Copy all the code below (everything between <html>...</html>).
+// 2. Paste it into a new file and save it as "index.html" on your computer.
+// 3. Double-click "index.html" to open it in your web browser.
+//    OR, right-click and choose "Open with" and select your browser.
+//
+// No server or installation is needed—it's static HTML/JS/CSS.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Omar Kurdi • Portfolio</title>
+  <meta name="description" content="Omar Kurdi — CS @ UC San Diego. Backend services, REST APIs, React front-ends, AWS Bedrock projects.">
+  <meta property="og:title" content="Omar Kurdi • Portfolio">
+  <meta property="og:description" content="CS @ UCSD. Backend + React. AWS Bedrock projects. Co-founded Thawban.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#0ea5e9">
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --surface: #0f141b;
+      --elev: #131a23;
+      --text: #e6eef8;
+      --muted: #9fb0c3;
+      --brand: #0ea5e9;
+      --brand-2: #22d3ee;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --shadow: 0 10px 30px rgba(2,8,23,.35);
+    }
+    .light {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --elev: #f1f5f9;
+      --text: #0b1220;
+      --muted: #4b5563;
+      --brand: #0284c7;
+      --brand-2: #06b6d4;
+      --shadow: 0 12px 28px rgba(2,8,23,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background: var(--bg); color: var(--text); }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.2rem; }
+
+    /* Nav */
+    header { position: sticky; top: 0; z-index: 20; backdrop-filter: saturate(180%) blur(10px); background: color-mix(in oklab, var(--surface) 75%, transparent); border-bottom: 1px solid color-mix(in oklab, var(--text) 15%, transparent); }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { font-weight: 800; letter-spacing: .2px; font-size: 1.05rem; display: flex; align-items: center; gap: .6rem; }
+    .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: 0 0 12px color-mix(in oklab, var(--brand) 50%, transparent); }
+    nav a { margin-left: 1.2rem; color: var(--muted); font-weight: 600; font-size: .95rem; }
+    nav a:hover, nav a:focus { color: var(--text); }
+    .toggle { background: var(--elev); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); color: var(--text); height: 36px; padding: 0 .9rem; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: .5rem; box-shadow: var(--shadow); }
+
+    /* Hero */
+    .hero { display: grid; grid-template-columns: 1.2fr .8fr; gap: 2rem; align-items: center; padding: 64px 0 24px; }
+    .hero h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.15; margin: 0 0 .6rem 0; }
+    .hero p { color: var(--muted); font-size: 1.05rem; margin: 0 0 1.2rem 0; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0 1.4rem; }
+    .chip { background: linear-gradient(180deg, color-mix(in oklab, var(--brand) 15%, transparent), transparent); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); color: var(--text); padding: .45rem .7rem; border-radius: 999px; font-size: .85rem; }
+    .cta { display: flex; gap: .75rem; margin-top: .6rem; }
+    .btn { background: linear-gradient(135deg, var(--brand), var(--brand-2)); border: none; color: white; padding: .8rem 1.1rem; border-radius: .8rem; font-weight: 700; cursor: pointer; box-shadow: var(--shadow); }
+    .btn.secondary { background: var(--elev); color: var(--text); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); }
+    .card { background: var(--surface); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); border-radius: 1rem; padding: 1rem; box-shadow: var(--shadow); }
+
+    /* Sections */
+    section { padding: 56px 0; }
+    h2.section-title { font-size: 1.4rem; letter-spacing: .2px; margin: 0 0 1rem 0; }
+    .subtitle { color: var(--muted); margin-bottom: 1.2rem; }
+
+    /* Grids */
+    .grid { display: grid; gap: 1rem; }
+    .grid.two { grid-template-columns: repeat(2, 1fr); }
+    .grid.three { grid-template-columns: repeat(3, 1fr); }
+
+    /* Timelines */
+    .item { padding: 1rem; border-radius: .8rem; background: var(--surface); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); }
+    .item h3 { margin: 0 0 .25rem 0; font-size: 1.05rem; }
+    .item .meta { color: var(--muted); font-size: .95rem; margin-bottom: .6rem; }
+    .item ul { margin: .4rem 0 0 1.1rem; padding: 0; }
+    .item li { margin: .35rem 0; }
+
+    /* Skills */
+    .tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .tag { background: var(--elev); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); padding: .45rem .6rem; border-radius: .6rem; color: var(--muted); font-weight: 600; font-size: .9rem; }
+
+    /* Footer */
+    footer { padding: 36px 0; color: var(--muted); text-align: center; border-top: 1px solid color-mix(in oklab, var(--text) 12%, transparent); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; gap: 1rem; }
+      .grid.two { grid-template-columns: 1fr; }
+      .grid.three { grid-template-columns: 1fr; }
+    }
+
+    /* Motion */
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .focus-ring:focus { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand"><span class="dot" aria-hidden="true"></span>Omar Kurdi</div>
+      <nav>
+        <a class="focus-ring" href="#about">About</a>
+        <a class="focus-ring" href="#experience">Experience</a>
+        <a class="focus-ring" href="#projects">Projects</a>
+        <a class="focus-ring" href="#skills">Skills</a>
+        <a class="focus-ring" href="#contact">Contact</a>
+        <button id="mode" class="toggle focus-ring" aria-label="Toggle theme">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Backend + React engineer, CS @ UC San Diego</h1>
+        <p>Hands-on experience building backend services, integrating REST APIs, and crafting responsive React front-ends. I ship maintainable software and contribute to AI-training workflows with data-driven problem solving. Co‑founder of Thawban, a Shopify thobe brand.</p>
+        <div class="chip-row">
+          <span class="chip">Python</span>
+          <span class="chip">Java</span>
+          <span class="chip">C++</span>
+          <span class="chip">FastAPI</span>
+          <span class="chip">React</span>
+          <span class="chip">AWS Bedrock</span>
+          <span class="chip">Docker</span>
+        </div>
+        <div class="cta">
+          <a class="btn" href="#projects">See Projects</a>
+          <a class="btn secondary" href="mailto:okurdi@ucsd.edu">Contact Me</a>
+        </div>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:.6rem;">
+          <div>
+            <div style="font-weight:800;">S U M M A R Y</div>
+            <div style="color:var(--muted);font-size:.95rem;">CS student • Backend • React • AWS</div>
+          </div>
+          <div style="display:flex;gap:.5rem;">
+            <a aria-label="GitHub" class="btn secondary" href="https://github.com/okurdi-coding" target="_blank" rel="noopener">GitHub</a>
+            <a aria-label="Resume" class="btn secondary" href="#contact">Resume</a>
+          </div>
+        </div>
+        <ul style="margin:1rem 0 0 1.1rem;">
+          <li>Backend services and REST API integration</li>
+          <li>React front-ends with responsive UI</li>
+          <li>Data-driven problem solving for AI workflows</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="about" class="reveal">
+      <h2 class="section-title">About</h2>
+      <p class="subtitle">B.S. Computer Science, UC San Diego — Expected Jun. 2027</p>
+      <p>I'm a computer science student passionate about building practical systems—clean APIs, reliable services, and thoughtful user interfaces. I like fast feedback loops, clear instrumentation, and shipping features that matter.</p>
+    </section>
+
+    <section id="experience" class="reveal">
+      <h2 class="section-title">Experience</h2>
+      <div class="grid two">
+        <div class="item">
+          <h3>EaziFunds — Backend Developer Intern</h3>
+          <div class="meta">Mar. 2025 – Aug. 2025 • Remote</div>
+          <ul>
+            <li>Integrated third‑party financial APIs for consistent data retrieval and processing.</li>
+            <li>Built backend components that streamlined data flow and improved responsiveness.</li>
+            <li>Validated endpoints in Postman; implemented Python/Java services with robust logging and error handling.</li>
+          </ul>
+        </div>
+        <div class="item">
+          <h3>Baba’z Grill Pizza & Subs — Manager</h3>
+          <div class="meta">Aug. 2019 – Apr. 2025 • San Diego, CA</div>
+          <ul>
+            <li>Trained and supervised staff; coordinated shift schedules and safety protocols.</li>
+            <li>Improved daily operations and consistency across a busy service environment.</li>
+          </ul>
+        </div>
+        <div class="item">
+          <h3>Thawban — Co‑Founder</h3>
+          <div class="meta">Aug. 2025 – Present</div>
+          <ul>
+            <li>Launched a Shopify thobe brand with online and in‑person sales.</li>
+            <li>Managed payments, shipping, inventory, and product catalog variants.</li>
+            <li>Maintained basic Shopify theme edits to improve conversion.</li>
+          </ul>
+        </div>
+        <div class="item">
+          <h3>Muslim Community Center of Greater San Diego — Soccer Coach</h3>
+          <div class="meta">Oct. 2023 – Present • San Diego, CA</div>
+          <ul>
+            <li>Led drills and team sessions emphasizing agility, teamwork, and communication.</li>
+            <li>Coordinated with parents and staff to ensure a safe, supportive environment.</li>
+          </ul>
+        </div>
+        <div class="item">
+          <h3>Al‑Mannar Weekend School — Administrative Assistant</h3>
+          <div class="meta">Oct. 2022 – Present • San Diego, CA</div>
+          <ul>
+            <li>Coordinated daily operations; managed check‑in/out and on‑time compliance.</li>
+            <li>Maintained schedules and tracked arrivals/departures; ensured policy adherence.</li>
+            <li>Provided substitute coverage and supported staff–parent communication.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="reveal">
+      <h2 class="section-title">Projects</h2>
+      <div class="grid two">
+        <div class="item">
+          <h3>VALORANT Team Composition Chatbot</h3>
+          <div class="meta">AWS Bedrock • Claude 3 Haiku • Knowledge Bases • CDK</div>
+          <ul>
+            <li>Built an AI chatbot for team composition using Amazon Bedrock and Claude 3 Haiku.</li>
+            <li>Integrated Knowledge Bases; deployed infra via AWS CDK and CLI.</li>
+          </ul>
+          <div class="cta">
+            <a class="btn secondary" href="#" aria-disabled="true">Demo</a>
+            <a class="btn secondary" href="#" aria-disabled="true">Code</a>
+          </div>
+        </div>
+        <div class="item">
+          <h3>Leemae’s Luxury Event Website</h3>
+          <div class="meta">React • CSS • Responsive UI</div>
+          <ul>
+            <li>Implemented a responsive site with an interactive image gallery and contact flows.</li>
+            <li>Built stateful React components; ensured mobile‑first responsiveness.</li>
+          </ul>
+          <div class="cta">
+            <a class="btn secondary" href="#" aria-disabled="true">Live</a>
+            <a class="btn secondary" href="#" aria-disabled="true">Code</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="reveal">
+      <h2 class="section-title">Skills</h2>
+      <div class="grid three">
+        <div class="item">
+          <h3>Cloud & Services</h3>
+          <div class="tags">
+            <span class="tag">AWS</span>
+            <span class="tag">Bedrock</span>
+            <span class="tag">EC2</span>
+            <span class="tag">RDS</span>
+            <span class="tag">S3</span>
+            <span class="tag">Lambda</span>
+            <span class="tag">DynamoDB</span>
+            <span class="tag">Step Functions</span>
+            <span class="tag">REST APIs</span>
+            <span class="tag">CDK</span>
+            <span class="tag">CLI</span>
+          </div>
+        </div>
+        <div class="item">
+          <h3>Software Engineering</h3>
+          <div class="tags">
+            <span class="tag">FastAPI</span>
+            <span class="tag">Python</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">React</span>
+            <span class="tag">Linux</span>
+            <span class="tag">Java</span>
+            <span class="tag">C</span>
+            <span class="tag">C++</span>
+            <span class="tag">C#</span>
+            <span class="tag">Bash</span>
+            <span class="tag">Terraform</span>
+            <span class="tag">Ansible</span>
+            <span class="tag">Mocha</span>
+            <span class="tag">Chai</span>
+            <span class="tag">Packer</span>
+            <span class="tag">GitHub Actions</span>
+            <span class="tag">Git</span>
+          </div>
+        </div>
+        <div class="item">
+          <h3>ML/AI & Data</h3>
+          <div class="tags">
+            <span class="tag">PyTorch</span>
+            <span class="tag">LLMs</span>
+            <span class="tag">SQLite</span>
+            <span class="tag">MySQL</span>
+            <span class="tag">R</span>
+            <span class="tag">Data Collection</span>
+          </div>
+        </div>
+      </div>
+      <p class="subtitle" style="margin-top:1rem;">Relevant classes: Data Structures, Algorithms, Software Development, Data Science, Computer Architecture, Linear Algebra, Discrete Math, Calculus I–III</p>
+    </section>
+
+    <section id="contact" class="reveal">
+      <h2 class="section-title">Contact</h2>
+      <div class="grid two">
+        <div class="item">
+          <p>Email: <a href="mailto:okurdi@ucsd.edu">okurdi@ucsd.edu</a></p>
+          <p>Phone: <a href="tel:18582544174">858‑254‑4174</a></p>
+          <div class="cta" style="margin-top:.6rem;">
+            <a class="btn" href="https://github.com/okurdi-coding" target="_blank" rel="noopener">GitHub</a>
+            <a class="btn secondary" href="#" aria-disabled="true">LinkedIn</a>
+          </div>
+        </div>
+        <div class="item">
+          <form id="contact-form">
+            <label for="name">Name</label><br>
+            <input id="name" name="name" type="text" required style="width:100%;height:40px;border-radius:8px;border:1px solid color-mix(in oklab, var(--text) 12%, transparent);background:var(--elev);color:var(--text);padding:0 .6rem;margin:.35rem 0 .8rem;">
+            <label for="email">Email</label><br>
+            <input id="email" name="email" type="email" required style="width:100%;height:40px;border-radius:8px;border:1px solid color-mix(in oklab, var(--text) 12%, transparent);background:var(--elev);color:var(--text);padding:0 .6rem;margin:.35rem 0 .8rem;">
+            <label for="message">Message</label><br>
+            <textarea id="message" name="message" required style="width:100%;height:96px;border-radius:8px;border:1px solid color-mix(in oklab, var(--text) 12%, transparent);background:var(--elev);color:var(--text);padding:.6rem;margin:.35rem 0 .8rem;"></textarea>
+            <button class="btn" type="submit">Send</button>
+            <span id="contact-success" style="display:none;color:var(--ok);margin-left:.6rem;">Thanks! I'll get back to you soon.</span>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© <span id="year"></span> Omar Kurdi. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // Theme: persist and toggle
+    (function() {
+      const stored = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      const light = stored ? stored === 'light' : prefersLight;
+      if (light) document.documentElement.classList.add('light');
+      const btn = document.getElementById('mode');
+      const setIcon = () => { btn.textContent = document.documentElement.classList.contains('light') ? '☀️' : '🌙'; };
+      setIcon();
+      btn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('light');
+        localStorage.setItem('theme', document.documentElement.classList.contains('light') ? 'light' : 'dark');
+        setIcon();
+      });
+    })();
+
+    // Reveal on scroll
+    (function(){
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+      }, { threshold: .12 });
+      document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    })();
+
+    // Contact form (demo)
+    document.getElementById('contact-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      this.reset();
+      const ok = document.getElementById('contact-success');
+      ok.style.display = 'inline';
+      setTimeout(() => ok.style.display = 'none', 4000);
+    });
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+
