@@ -63,12 +63,15 @@
     .btn { background: linear-gradient(135deg, var(--brand), var(--brand-2)); border: none; color: white; padding: .8rem 1.1rem; border-radius: .8rem; font-weight: 700; cursor: pointer; box-shadow: var(--shadow); transition: transform .15s ease, filter .2s ease; }
     .btn.secondary { background: var(--elev); color: var(--text); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); }
     .btn:hover { transform: translateY(-1px); filter: brightness(1.02); }
+    .btn:active { transform: translateY(0); filter: brightness(0.98); }
     .card { background: var(--surface); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); border-radius: 1rem; padding: 1rem; box-shadow: var(--shadow); }
 
     /* Sections */
     section { padding: 56px 0; }
-    h2.section-title { font-size: 1.4rem; letter-spacing: .2px; margin: 0 0 1rem 0; }
+    h2.section-title { font-size: 1.4rem; letter-spacing: .2px; margin: 0 0 1rem 0; position: relative; }
+    h2.section-title::after { content: ""; position: absolute; left: 0; bottom: -8px; width: 72px; height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--brand), var(--brand-2)); }
     .subtitle { color: var(--muted); margin-bottom: 1.2rem; }
+    main section:not(:first-of-type) { border-top: 1px solid color-mix(in oklab, var(--text) 10%, transparent); }
 
     /* Grids */
     .grid { display: grid; gap: 1rem; }
@@ -76,11 +79,12 @@
     .grid.three { grid-template-columns: repeat(3, 1fr); }
 
     /* Timelines */
-    .item { padding: 1rem; border-radius: .8rem; background: var(--surface); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); }
+    .item { padding: 1rem; border-radius: .8rem; background: var(--surface); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
     .item h3 { margin: 0 0 .25rem 0; font-size: 1.05rem; }
     .item .meta { color: var(--muted); font-size: .95rem; margin-bottom: .6rem; }
     .item ul { margin: .4rem 0 0 1.1rem; padding: 0; }
     .item li { margin: .35rem 0; }
+    .item:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--brand) 40%, transparent); box-shadow: 0 16px 36px rgba(2,8,23,.28); }
 
     /* Skills */
     .tags { display: flex; flex-wrap: wrap; gap: .5rem; }
@@ -100,9 +104,24 @@
     .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
     .reveal.in { opacity: 1; transform: translateY(0); }
     .focus-ring:focus { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 8px; }
+    /* Decorative background */
+    .bg-decor { position: fixed; inset: -20% -10% auto -10%; height: 60vh; z-index: -1; pointer-events: none; filter: blur(40px) saturate(120%); opacity: .55; }
+    .bg-decor::before, .bg-decor::after { content: ""; position: absolute; border-radius: 50%; }
+    .bg-decor::before { width: 60vmax; height: 60vmax; background: radial-gradient(closest-side, color-mix(in oklab, var(--brand) 20%, transparent), transparent 70%); top: -10vmax; left: -10vmax; }
+    .bg-decor::after { width: 50vmax; height: 50vmax; background: radial-gradient(closest-side, color-mix(in oklab, var(--brand-2) 20%, transparent), transparent 70%); top: 0; right: -10vmax; }
+    /* Hero enhancements */
+    .kicker { display: inline-flex; align-items: center; gap: .5rem; padding: .25rem .6rem; border-radius: 999px; background: color-mix(in oklab, var(--brand) 12%, transparent); border: 1px solid color-mix(in oklab, var(--brand) 35%, transparent); color: var(--text); font-weight: 700; font-size: .78rem; letter-spacing: .3px; margin-bottom: .6rem; }
+    .gradient-text { background: linear-gradient(135deg, var(--text) 10%, color-mix(in oklab, var(--brand) 50%, var(--text)) 50%, var(--text) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    /* Card polish */
+    .card { transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+    .card:hover { transform: translateY(-3px); border-color: color-mix(in oklab, var(--brand) 30%, transparent); box-shadow: 0 20px 40px rgba(2,8,23,.32); }
+    /* Form polish */
+    #contact-form input, #contact-form textarea { transition: border-color .2s ease, box-shadow .2s ease; }
+    #contact-form input:focus, #contact-form textarea:focus { border-color: color-mix(in oklab, var(--brand) 45%, transparent) !important; box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 25%, transparent); }
   </style>
 </head>
 <body>
+  <div class="bg-decor" aria-hidden="true"></div>
   <header>
     <div class="container nav">
       <div class="brand"><span class="dot" aria-hidden="true"></span>Omar Kurdi</div>
@@ -120,7 +139,8 @@
   <main class="container">
     <section class="hero">
       <div>
-        <h1>Backend + React engineer, CS @ UC San Diego</h1>
+        <div class="kicker">Open to internships & projects</div>
+        <h1 class="gradient-text">Backend + React engineer, CS @ UC San Diego</h1>
         <p>Hands-on experience building backend services, integrating REST APIs, and crafting responsive React front-ends. I ship maintainable software and contribute to AI-training workflows with data-driven problem solving. Co‑founder of Thawban, a Shopify thobe brand.</p>
         <div class="chip-row">
           <span class="chip">Python</span>
