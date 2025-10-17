@@ -118,6 +118,9 @@
     /* Form polish */
     #contact-form input, #contact-form textarea { transition: border-color .2s ease, box-shadow .2s ease; }
     #contact-form input:focus, #contact-form textarea:focus { border-color: color-mix(in oklab, var(--brand) 45%, transparent) !important; box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 25%, transparent); }
+    #contact-form input, #contact-form textarea { box-sizing: border-box; width: 100%; max-width: 100%; display: block; }
+    #contact-form input:hover, #contact-form textarea:hover { border-color: color-mix(in oklab, var(--brand) 25%, transparent); }
+    #contact .item { overflow: hidden; }
   </style>
 </head>
 <body>
@@ -410,6 +413,15 @@
           setTimeout(() => copied.style.display = 'none', 2000);
         } catch {}
       });
+    })();
+
+    // Auto-resize message textarea
+    (function(){
+      const ta = document.getElementById('message');
+      if (!ta) return;
+      const resize = () => { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; };
+      ta.addEventListener('input', resize);
+      resize();
     })();
 
     // Year
